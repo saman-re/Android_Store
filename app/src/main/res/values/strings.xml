@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Ap_project</string>
+
+<!--    textEdit hints-->
+    <string name="EnterUsername">Enter your Username</string>
+    <string name="EnterPassword">Enter your Password</string>
+<!--     switch text-->
+    <string name="switch_title">Want\'s to be Seller:</string>
+<!--    log in titles-->
+    <string name="log_in_title">Sign In</string>
+    <string name="register_title">Sign Up</string>
+<!--    link text-->
+    <string name="have_account"><u>Already have account?</u></string>
+    <string name="not_have_account"><u>Don\'t have account?</u></string>
+</resources>
