@@ -1,6 +1,9 @@
 package com.example.ap_project.content.register;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.ap_project.R;
+import com.example.ap_project.activities.HomeActivity;
 import com.example.ap_project.data.entities.User;
 import com.example.ap_project.data.repository.Repository;
 import com.example.ap_project.data.repository.RepositoryCallback;
@@ -60,6 +64,11 @@ public class RegisterFragment extends Fragment {
                 String userName, password, phoneNumber;
                 boolean seller;
 
+                userName = userNameEditText.getText().toString();
+                password = passwordEditText.getText().toString();
+                phoneNumber = phoneNumberEditText.getText().toString();
+                seller =sellerOption.isChecked();
+
                 RepositoryCallback callback = new RepositoryCallback() {
                     @SuppressLint("SetTextI18n")
                     @Override
@@ -70,12 +79,23 @@ public class RegisterFragment extends Fragment {
                                 @Override
                                 public void run() {
                                     Toast.makeText(getActivity(),"User registered successfully",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(),"Welcome "+userName,Toast.LENGTH_SHORT).show();
+
+                                    Context context=getActivity();
+                                    SharedPreferences shareUser =context.getSharedPreferences("profile_username",Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor=shareUser.edit();
+                                    editor.putString("username",userName);
+                                    editor.apply();
+
+                                    Intent intent=new Intent(getContext(), HomeActivity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
                                 }
                             });
 
                         }else if (result instanceof Result.Error){
-                            String Err=((Result.Error<Exception>) result).exception.getMessage();
 
+                            String Err=((Result.Error<Exception>) result).exception.getMessage();
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -97,19 +117,14 @@ public class RegisterFragment extends Fragment {
                     }
                 };
 
-                userName = userNameEditText.getText().toString();
-                password = passwordEditText.getText().toString();
-                phoneNumber = phoneNumberEditText.getText().toString();
-                seller =sellerOption.isChecked();
-
                 if(userName.equals("") || password.equals("") || phoneNumber.equals("")){
                     Toast.makeText(getActivity(),"Please fill out all forms", Toast.LENGTH_SHORT).show();
                 }else {
                     //handle connecting to data base
                     Repository.getInstance(getActivity()).insertUser(userName,password,phoneNumber,"",seller,callback);
 
-                    String a = String.format("%s,,%s,,%s %s", userName, password, phoneNumber,seller);
-                    Toast.makeText(getActivity(), a, Toast.LENGTH_SHORT).show();
+//                    String a = String.format("%s,,%s,,%s %s", userName, password, phoneNumber,seller);
+//                    Toast.makeText(getActivity(), a, Toast.LENGTH_SHORT).show();
                 }
             }
         });

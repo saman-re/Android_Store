@@ -1,6 +1,8 @@
 package com.example.ap_project.content.login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -75,7 +77,13 @@ public class LoginFragment extends Fragment {
                                     } else if (user.password.equals(password)) {
 
                                         Toast.makeText(getActivity().getApplicationContext(),"Welcome "+user.username,Toast.LENGTH_SHORT).show();
-                                        Intent intent=new Intent(getContext(), HomeActivity.class);
+
+                                        Context context=getActivity();
+                                        SharedPreferences shareUser =context.getSharedPreferences("profile_username", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor=shareUser.edit();
+                                        editor.putString("username",userName);
+                                        editor.apply();
+                                        Intent intent = new Intent(getContext(), HomeActivity.class);
                                         startActivity(intent);
                                         getActivity().finish();
 
