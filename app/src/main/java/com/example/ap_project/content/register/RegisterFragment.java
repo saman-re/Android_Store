@@ -106,7 +106,7 @@ public class RegisterFragment extends Fragment {
                     Toast.makeText(getActivity(),"Please fill out all forms", Toast.LENGTH_SHORT).show();
                 }else {
                     //handle connecting to data base
-                    Repository.getInstance(getActivity()).insertUser(userName,password,phoneNumber,"",callback);
+                    Repository.getInstance(getActivity()).insertUser(userName,password,phoneNumber,"",seller,callback);
 
                     String a = String.format("%s,,%s,,%s %s", userName, password, phoneNumber,seller);
                     Toast.makeText(getActivity(), a, Toast.LENGTH_SHORT).show();

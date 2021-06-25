@@ -22,10 +22,14 @@ public class User {
     @ColumnInfo(name ="image_path")
     public String imagePath;
 
-    public User(String username, String password, String phoneNumber, String imagePath) {
+    @ColumnInfo(name = "seller")
+    public boolean seller;
+
+    public User(String username, String password, String phoneNumber, String imagePath,boolean seller) {
         this.username = username;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.imagePath = imagePath;
+        this.seller = seller;
     }
 }

@@ -36,12 +36,12 @@ public class Repository {
         });
     }
 
-    public void insertUser(String username,String password ,String phone,String imagePath,RepositoryCallback<User> callback){
+    public void insertUser(String username,String password ,String phone,String imagePath,boolean seller,RepositoryCallback<User> callback){
     MyApplication.executorService.execute(new Runnable() {
         @Override
         public void run() {
             try {
-                localDataSource.insertUser(username,password,phone,imagePath);
+                localDataSource.insertUser(username,password,phone,imagePath,seller);
                 callback.onComplete(new Result.Success<>(null));
             }catch (Exception e){
                 callback.onComplete(new Result.Error<>(e));

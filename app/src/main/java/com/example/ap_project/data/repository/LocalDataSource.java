@@ -19,7 +19,7 @@ public class LocalDataSource {
     public User getUser(String username){
         return db.userDao().getUser(username);
     }
-    public void insertUser(String username,String password ,String phone,String imagePath){
-        db.userDao().insertUser(username,password,phone,imagePath);
+    public void insertUser(String username,String password ,String phone,String imagePath ,boolean seller){
+        db.userDao().insertUser(username,password,phone,imagePath,seller);
     }
 }

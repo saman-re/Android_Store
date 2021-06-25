@@ -8,8 +8,8 @@ import com.example.ap_project.data.entities.User;
 @Dao
 public interface UserDao {
 
-    @Query("INSERT INTO User(username ,password,phone_number,image_path) VALUES(:username,:password,:phoneNumber,:imagePath)")
-    void insertUser(String username ,String password,String phoneNumber,String imagePath);
+    @Query("INSERT INTO User(username ,password,phone_number,image_path,seller) VALUES(:username,:password,:phoneNumber,:imagePath,:seller)")
+    void insertUser(String username ,String password,String phoneNumber,String imagePath,boolean seller);
 
     @Query("SELECT * FROM User WHERE username = :username")
     User getUser(String username);
