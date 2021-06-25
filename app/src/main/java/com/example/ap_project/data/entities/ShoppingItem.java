@@ -2,6 +2,7 @@ package com.example.ap_project.data.entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
@@ -29,7 +30,7 @@ public class ShoppingItem {
         this.username = username;
         this.imagePath="";
     }
-
+    @Ignore
     public ShoppingItem(String title, int price, String imagePath, String username) {
         this.title = title;
         this.price = price;

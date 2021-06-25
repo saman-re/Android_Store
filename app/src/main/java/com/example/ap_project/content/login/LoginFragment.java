@@ -1,6 +1,8 @@
 package com.example.ap_project.content.login;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +17,19 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.ap_project.R;
+import com.example.ap_project.activities.HomeActivity;
+import com.example.ap_project.activities.LoginActivity;
+import com.example.ap_project.data.entities.User;
+import com.example.ap_project.data.repository.Repository;
+import com.example.ap_project.data.repository.RepositoryCallback;
+import com.example.ap_project.data.repository.Result;
 
 public class LoginFragment extends Fragment {
 
     EditText userNameEditText, passwordEditText;
     TextView registerTextView;
     Button signInButton;
+    TextView errTextView;
 
     @Nullable
     @org.jetbrains.annotations.Nullable
@@ -32,6 +41,7 @@ public class LoginFragment extends Fragment {
         passwordEditText = view.findViewById(R.id.edit_text_password);
         registerTextView = view.findViewById(R.id.text_view_register);
         signInButton = view.findViewById(R.id.sign_in_button);
+        errTextView = view.findViewById(R.id.error_text_view);
 
         registerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,12 +57,59 @@ public class LoginFragment extends Fragment {
                 userName = userNameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
 
+                final String[] status = {null};
+                RepositoryCallback callback = new RepositoryCallback<User>() {
+                    @Override
+                    public void onComplete(Result result) {
+                        if (result instanceof Result.Success) {
+                            User user = ((Result.Success<User>) result).data;
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    if (user == null) {
+
+                                        errTextView.setText("username not found");
+                                        errTextView.setVisibility(View.VISIBLE);
+
+                                    } else if (user.password.equals(password)) {
+
+                                        Toast.makeText(getActivity().getApplicationContext(),"Welcome "+user.username,Toast.LENGTH_SHORT).show();
+                                        Intent intent=new Intent(getContext(), HomeActivity.class);
+                                        startActivity(intent);
+                                        getActivity().finish();
+
+                                    } else {
+
+                                        errTextView.setText("wrong password");
+                                        errTextView.setVisibility(View.VISIBLE);
+
+                                    }
+                                }
+                            });
+                        } else if (result instanceof Result.Error) {
+
+                            String Err = ((Result.Error<Exception>) result).exception.getMessage();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    errTextView.setText("error in getting data happened");
+
+                                }
+                            });
+                            Log.d("Fetching Data", Err);
+                        }
+                    }
+                };
+
                 if (userName.equals("") || password.equals("")) {
                     Toast.makeText(getActivity(), "Please fill out all forms", Toast.LENGTH_SHORT).show();
+
                 } else {
                     //handle connecting to data base
-                    String a = String.format("%s,,%s", userName, password);
-                    Toast.makeText(getActivity(), a, Toast.LENGTH_SHORT).show();
+                    Repository.getInstance(getContext()).getUser(userName, callback);
+
                 }
             }
         });

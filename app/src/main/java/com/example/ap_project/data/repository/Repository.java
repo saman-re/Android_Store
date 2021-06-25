@@ -1,20 +1,52 @@
 package com.example.ap_project.data.repository;
 
+import android.content.Context;
+
+import com.example.ap_project.application.MyApplication;
+import com.example.ap_project.data.entities.User;
+
 public class Repository {
 
     private static Repository repository;
 
-    private LocalDataSource localDataSource;
+    private final LocalDataSource localDataSource;
 
-    private Repository() {
-
+    private Repository(Context context) {
+        localDataSource=new LocalDataSource(context);
     }
 
-    public static Repository getInstance() {
+    public static Repository getInstance(Context context) {
         if (repository == null) {
-            repository = new Repository();
+            repository = new Repository(context);
         }
-
         return repository;
+    }
+
+    public void getUser(String username,RepositoryCallback<User> callback){
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    User user = localDataSource.getUser(username);
+                    callback.onComplete(new Result.Success<>(user));
+                }catch (Exception e){
+                    callback.onComplete(new Result.Error<>(e));
+                }
+            }
+        });
+    }
+
+    public void insertUser(String username,String password ,String phone,String imagePath,RepositoryCallback<User> callback){
+    MyApplication.executorService.execute(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                localDataSource.insertUser(username,password,phone,imagePath);
+                callback.onComplete(new Result.Success<>(null));
+            }catch (Exception e){
+                callback.onComplete(new Result.Error<>(e));
+            }
+        }
+    });
     }
 }
