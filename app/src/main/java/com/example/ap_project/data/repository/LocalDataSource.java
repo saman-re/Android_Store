@@ -22,4 +22,7 @@ public class LocalDataSource {
     public void insertUser(String username,String password ,String phone,String imagePath ,boolean seller){
         db.userDao().insertUser(username,password,phone,imagePath,seller);
     }
+    public void deleteUser(String username){
+        db.userDao().deleteUser(username);
+    }
 }

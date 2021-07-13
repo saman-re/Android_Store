@@ -49,4 +49,18 @@ public class Repository {
         }
     });
     }
+
+    public void deleteUser(String username,RepositoryCallback<Void> callback){
+      MyApplication.executorService.execute(new Runnable() {
+          @Override
+          public void run() {
+              try {
+                  localDataSource.deleteUser(username);
+                  callback.onComplete(new Result.Success<>(null));
+              }catch (Exception e){
+                  callback.onComplete(new Result.Error<>(e));
+              }
+          }
+      });
+    }
 }

@@ -42,13 +42,13 @@ public class HomeActivity extends AppCompatActivity {
         View headerView = navigationView.getHeaderView(0);
         TextView userName = headerView.findViewById(R.id.text_view_username);
         TextView phoneNumber = headerView.findViewById(R.id.text_view_phone_number);
-        CircleImageView imageView =headerView.findViewById(R.id.profile_image);
-        View navActionView =  navigationView.getMenu().getItem(1).getSubMenu().getItem(0).getActionView();
-        AppCompatButton logoutBtn,delAccountBtn;
+        CircleImageView imageView = headerView.findViewById(R.id.profile_image);
+        View navActionView = navigationView.getMenu().getItem(1).getSubMenu().getItem(0).getActionView();
+        AppCompatButton logoutBtn, delAccountBtn;
         logoutBtn = navActionView.findViewById(R.id.nav_logout_btn);
         delAccountBtn = navActionView.findViewById(R.id.nav_del_account_btn);
 
-        RepositoryCallback callback = new RepositoryCallback() {
+        RepositoryCallback getUserCallback = new RepositoryCallback() {
             @Override
             public void onComplete(Result result) {
                 if (result instanceof Result.Success) {
@@ -60,32 +60,56 @@ public class HomeActivity extends AppCompatActivity {
                         public void run() {
                             userName.setText(user.username);
                             phoneNumber.setText(user.phoneNumber);
-                            if(user.seller){
+                            if (user.seller) {
                                 navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setTitle("product count");
                                 navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setTitle("account type: seller");
-                            }else{
+                            } else {
                                 navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setVisible(false);
                                 navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setTitle("account type: customer");
                             }
                         }
                     });
                 } else if (result instanceof Result.Error) {
-                    Toast.makeText(getApplicationContext(), "Error happened", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Error happened", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                     finish();
                 }
             }
         };
+        RepositoryCallback deleteUserCallback = new RepositoryCallback() {
+            @Override
+            public void onComplete(Result result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (result instanceof Result.Success) {
 
-        Repository.getInstance(HomeActivity.this).getUser(username, callback);
-//        Log.d("menu", navigationView.getMenu().getItem(1).getSubMenu().getItem(0).getActionView().toString());
+                            Toast.makeText(getApplicationContext(), "user deleted successfully", Toast.LENGTH_SHORT).show();
+                            sharedUser.edit().clear().apply();
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+
+                        } else if (result instanceof Result.Error) {
+
+                            Toast.makeText(getApplicationContext(), "cant delete user", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+
+            }
+        };
+        Repository repository = Repository.getInstance(HomeActivity.this);
+        repository.getUser(username, getUserCallback);
+
         //set click listener for image view must be handle for getting image
         imageView.setClickable(true);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(),"hello",Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "hello", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -93,7 +117,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder alertDialogBuilder =new AlertDialog.Builder(HomeActivity.this);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(HomeActivity.this);
 
                 //title
                 alertDialogBuilder.setTitle("want to logout??");
@@ -124,7 +148,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder alertDialogBuilder =new AlertDialog.Builder(HomeActivity.this);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(HomeActivity.this);
 
                 //title
                 alertDialogBuilder.setTitle("Are u sure??");
@@ -134,10 +158,11 @@ public class HomeActivity extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                sharedUser.edit().clear().apply();
-                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                startActivity(intent);
-                                finish();
+                                repository.deleteUser(username, deleteUserCallback);
+//                                sharedUser.edit().clear().apply();
+//                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+//                                startActivity(intent);
+//                                finish();
                             }
                         }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
