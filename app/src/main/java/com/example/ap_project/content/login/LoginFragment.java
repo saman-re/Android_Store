@@ -59,7 +59,6 @@ public class LoginFragment extends Fragment {
                 userName = userNameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
 
-                final String[] status = {null};
                 RepositoryCallback callback = new RepositoryCallback<User>() {
                     @Override
                     public void onComplete(Result result) {

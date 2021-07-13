@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group>
+        <item android:title="account info">
+            <menu>
+                <item
+                    android:enabled="false"
+                    android:icon="@drawable/error_icon"
+                    android:title="number of product" />
+                <item
+                    android:enabled="false"
+                    android:icon="@drawable/error_icon"
+                    android:title="account type" />
+            </menu>
+        </item>
+    </group>
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_about_us"
+                android:enabled="false"
+                android:title=""
+                app:actionLayout="@layout/profile_action"
+                app:showAsAction="always" />
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="180dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/nav_del_account_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="12dp"
+                    android:layout_marginRight="2dp"
+                    android:drawableLeft="@drawable/delete_account_icon"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Del account"
+                    />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/nav_logout_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/log_out_icon"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="12dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Logout"
+            />
+    </LinearLayout>
+
+</LinearLayout>
