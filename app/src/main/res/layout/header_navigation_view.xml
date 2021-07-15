@@ -8,8 +8,8 @@
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
@@ -26,6 +26,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:textColor="#CAC9C9"
+        android:textStyle="bold"
+        android:textSize="24sp"
         android:layout_gravity="center_horizontal"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:text="User Name" />
@@ -40,5 +42,7 @@
         android:layout_gravity="center"
         android:textAppearance="?attr/textAppearanceBody2"
         android:textColor="#737272"
-        android:text="Phone Number" />
+        android:text="Phone Number"
+        android:textStyle="italic"
+        android:textSize="18sp"/>
 </LinearLayout>

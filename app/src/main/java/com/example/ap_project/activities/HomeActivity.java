@@ -1,15 +1,22 @@
 package com.example.ap_project.activities;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,12 +28,21 @@ import com.example.ap_project.data.repository.Repository;
 import com.example.ap_project.data.repository.RepositoryCallback;
 import com.example.ap_project.data.repository.Result;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeActivity extends AppCompatActivity {
 
     User user;
+    final int GALLERY_REQUEST = 500;
+    CircleImageView imageView;
+    Uri selectedImage;
+    RepositoryCallback updateUserCallback;
+    Repository repository;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -42,7 +58,7 @@ public class HomeActivity extends AppCompatActivity {
         View headerView = navigationView.getHeaderView(0);
         TextView userName = headerView.findViewById(R.id.text_view_username);
         TextView phoneNumber = headerView.findViewById(R.id.text_view_phone_number);
-        CircleImageView imageView = headerView.findViewById(R.id.profile_image);
+        imageView = headerView.findViewById(R.id.profile_image);
         View navActionView = navigationView.getMenu().getItem(1).getSubMenu().getItem(0).getActionView();
         AppCompatButton logoutBtn, delAccountBtn;
         logoutBtn = navActionView.findViewById(R.id.nav_logout_btn);
@@ -58,6 +74,11 @@ public class HomeActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            Log.d("TAGmn", user.imagePath);
+                            if (!user.imagePath.equals("")) {
+                                File file = new File(user.imagePath);
+                                Picasso.get().load(file).fit().into(imageView);
+                            }
                             userName.setText(user.username);
                             phoneNumber.setText(user.phoneNumber);
                             if (user.seller) {
@@ -101,17 +122,49 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         };
-        Repository repository = Repository.getInstance(HomeActivity.this);
+        updateUserCallback = new RepositoryCallback() {
+            @Override
+            public void onComplete(Result result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (result instanceof Result.Success) {
+
+                            Toast.makeText(getApplicationContext(), "user updated successfully", Toast.LENGTH_SHORT).show();
+
+                        } else if (result instanceof Result.Error) {
+
+                            Toast.makeText(getApplicationContext(), "cant update user", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+
+            }
+        };
+
+        repository = Repository.getInstance(HomeActivity.this);
         repository.getUser(username, getUserCallback);
 
+//        Picasso.get().load(Uri.parse("content://media/external/images/media/5073")).into(imageView);
         //set click listener for image view must be handle for getting image
         imageView.setClickable(true);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "hello", Toast.LENGTH_SHORT).show();
+
+                //start from here
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                mStartForResult.launch(photoPickerIntent);
+//                startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+
+//                Log.d("TAG234", user.toString()+"/"+selectedImage);
+//                repository.updateUser(user.username,user.password,user.phoneNumber,selectedImage.toString(),updateUserCallback);
             }
         });
+
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,11 +211,9 @@ public class HomeActivity extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 repository.deleteUser(username, deleteUserCallback);
-//                                sharedUser.edit().clear().apply();
-//                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-//                                startActivity(intent);
-//                                finish();
+
                             }
                         }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
@@ -177,6 +228,44 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+
+//                    Toast.makeText(getActivity(),Activity.DEFAULT_KEYS_DISABLE,Toast.LENGTH_SHORT).show();
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        selectedImage = result.getData().getData();
+
+                        Picasso.get().load(selectedImage).into(imageView);
+                        Log.d("TAGmn'", selectedImage.toString());
+                        repository.updateUser(user.username, user.password, user.phoneNumber, selectedImage.toString(), updateUserCallback);
+                    }
+                }
+            });
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK)
+            switch (requestCode) {
+                case GALLERY_REQUEST:
+                    selectedImage = data.getData();
+
+                    Picasso.get().load(selectedImage).into(imageView);
+                    Log.d("TAGmn'", selectedImage.toString());
+                    repository.updateUser(user.username, user.password, user.phoneNumber, selectedImage.toString(), updateUserCallback);
+//                    try {
+////                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+////                        carImage.setImageBitmap(bitmap);
+//                    } catch (IOException e) {
+//                        Log.i("TAG", "Some exception " + e);
+//                    }
+                    break;
+            }
     }
 
     public User getUser() {

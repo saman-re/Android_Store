@@ -25,4 +25,7 @@ public class LocalDataSource {
     public void deleteUser(String username){
         db.userDao().deleteUser(username);
     }
+    public void updateUser(String username ,String password,String phoneNumber,String imagePath){
+        db.userDao().updateUser(username,password,phoneNumber,imagePath);
+    }
 }
