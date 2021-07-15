@@ -76,8 +76,7 @@ public class HomeActivity extends AppCompatActivity {
                         public void run() {
                             Log.d("TAGmn", user.imagePath);
                             if (!user.imagePath.equals("")) {
-                                File file = new File(user.imagePath);
-                                Picasso.get().load(file).fit().into(imageView);
+                                Picasso.get().load(Uri.parse(user.imagePath)).fit().into(imageView);
                             }
                             userName.setText(user.username);
                             phoneNumber.setText(user.phoneNumber);
