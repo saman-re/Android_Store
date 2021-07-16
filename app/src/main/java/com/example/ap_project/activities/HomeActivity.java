@@ -21,12 +21,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.ap_project.R;
 import com.example.ap_project.data.entities.User;
 import com.example.ap_project.data.repository.Repository;
 import com.example.ap_project.data.repository.RepositoryCallback;
 import com.example.ap_project.data.repository.Result;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
@@ -41,6 +48,8 @@ public class HomeActivity extends AppCompatActivity {
     final int GALLERY_REQUEST = 500;
     CircleImageView imageView;
     Uri selectedImage;
+    Toolbar toolbar;
+
     RepositoryCallback updateUserCallback;
     Repository repository;
 
@@ -63,6 +72,9 @@ public class HomeActivity extends AppCompatActivity {
         AppCompatButton logoutBtn, delAccountBtn;
         logoutBtn = navActionView.findViewById(R.id.nav_logout_btn);
         delAccountBtn = navActionView.findViewById(R.id.nav_del_account_btn);
+
+        toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
 
         RepositoryCallback getUserCallback = new RepositoryCallback() {
             @Override
@@ -227,6 +239,19 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
+//        BottomNavigationView bottomNav =findViewById(R.id.bottom_navigation);
+//        NavigationUI.setupWithNavController(bottomNav , navController);
+
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
+                .setOpenableLayout(drawerLayout)
+                .build();
+
+        NavigationUI.setupWithNavController(navigationView, navController);
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
     }
 
     ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
