@@ -44,7 +44,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeActivity extends AppCompatActivity {
 
-    User user;
+    private static User user;
     final int GALLERY_REQUEST = 500;
     CircleImageView imageView;
     Uri selectedImage;
@@ -292,7 +292,7 @@ public class HomeActivity extends AppCompatActivity {
             }
     }
 
-    public User getUser() {
+    public static User getUser() {
         return user;
     }
 }

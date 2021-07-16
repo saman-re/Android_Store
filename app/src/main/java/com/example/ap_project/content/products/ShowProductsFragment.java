@@ -9,11 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ap_project.R;
+import com.example.ap_project.data.entities.Product;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShowProductsFragment extends Fragment {
 
@@ -26,7 +32,19 @@ public class ShowProductsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_show_products, container, false);
 
-        addProductBtn =view.findViewById(R.id.add_product_btn);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        List<Product> products =new ArrayList<Product>();
+        for (int i = 0; i < 20; i++) {
+
+            products.add(new Product("salam",100,"","saman","0990"));
+
+        }
+
+        ProductAdapter productAdapter = new ProductAdapter(products);
+        recyclerView.setAdapter(productAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        addProductBtn = view.findViewById(R.id.add_product_btn);
         addProductBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

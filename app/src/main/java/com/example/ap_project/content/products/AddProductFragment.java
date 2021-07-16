@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.ap_project.R;
+import com.example.ap_project.activities.HomeActivity;
+import com.example.ap_project.data.entities.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +27,7 @@ public class AddProductFragment extends Fragment {
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_add_product, container, false);
-
+        User currentUser= HomeActivity.getUser();
 
 
 

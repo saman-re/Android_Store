@@ -5,11 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".content.products.ShowProductsFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="show product fragment"/>
+        android:layout_height="match_parent"/>
+
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_product_btn"
         android:layout_width="wrap_content"
