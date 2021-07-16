@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,8 +29,8 @@ public class AddProductFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_add_product, container, false);
         User currentUser= HomeActivity.getUser();
-
-
+        TextView textView=view.findViewById(R.id.test_text_view);
+        textView.setText(currentUser.username);
 
         return view;
 

@@ -279,7 +279,7 @@ public class HomeActivity extends AppCompatActivity {
                 case GALLERY_REQUEST:
                     selectedImage = data.getData();
 
-                    Picasso.get().load(selectedImage).into(imageView);
+                    Picasso.get().load(selectedImage).fit().into(imageView);
                     Log.d("TAGmn'", selectedImage.toString());
                     repository.updateUser(user.username, user.password, user.phoneNumber, selectedImage.toString(), updateUserCallback);
 //                    try {
@@ -295,4 +295,5 @@ public class HomeActivity extends AppCompatActivity {
     public static User getUser() {
         return user;
     }
+//    public  static void startNewActivity(Intent intent){startActivity(intent);}
 }
