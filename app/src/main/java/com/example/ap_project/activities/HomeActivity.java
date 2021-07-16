@@ -295,5 +295,4 @@ public class HomeActivity extends AppCompatActivity {
     public static User getUser() {
         return user;
     }
-//    public  static void startNewActivity(Intent intent){startActivity(intent);}
 }

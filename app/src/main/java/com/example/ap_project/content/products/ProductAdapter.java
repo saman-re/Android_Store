@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,7 +58,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         TextView title, owner, price, phoneNumber;
         ImageView productImage;
-        View view = itemView;
+//        View view;
+        AppCompatImageButton productEditBtn,productDeleteBtn;
 
         public ProductViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -65,8 +68,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             price = itemView.findViewById(R.id.card_view_price);
             phoneNumber = itemView.findViewById(R.id.card_view_phone_number);
             productImage = itemView.findViewById(R.id.card_view_product_image);
-
-
+            productEditBtn=itemView.findViewById(R.id.card_edit_button);
+            productDeleteBtn=itemView.findViewById(R.id.card_delete_button);
             phoneNumber.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

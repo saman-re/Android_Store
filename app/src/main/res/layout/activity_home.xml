@@ -20,7 +20,14 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+<!--            <Button-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:text="salam"-->
+<!--                >-->
+<!--            </Button>-->
+        </androidx.appcompat.widget.Toolbar>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
