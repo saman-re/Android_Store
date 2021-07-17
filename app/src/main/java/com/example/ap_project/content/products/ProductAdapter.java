@@ -25,6 +25,7 @@ import com.example.ap_project.R;
 import com.example.ap_project.activities.HomeActivity;
 import com.example.ap_project.data.entities.Product;
 import com.example.ap_project.data.entities.User;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -101,12 +102,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         public void bind(Product product) {
             title.setText(product.title);
             owner.setText("owner: " + product.username);
-            price.setText("price: " + String.valueOf(product.price) + "$");
+            price.setText("price: " + String.valueOf(product.price) + " $");
             phoneNumber.setText(product.phoneNumber);
             phoneNumber.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-//            Picasso.get().load(Uri.parse(product.imagePath)).fit().into(productImage);
-            Log.d("TAGman", currentUser.username+"::"+product.username);
-            Log.d("TAGmandy", String.valueOf(!currentUser.username.equals(product.username)));
+            Picasso.get().load(Uri.parse(product.imagePath))
+                    .placeholder(R.drawable.card_image)
+                    .error(R.drawable.card_image)
+                    .fit().into(productImage);
+
             if (currentUser.username.equals(product.username)){
                 productEditBtn.setVisibility(View.VISIBLE);
                 productDeleteBtn.setVisibility(View.VISIBLE);

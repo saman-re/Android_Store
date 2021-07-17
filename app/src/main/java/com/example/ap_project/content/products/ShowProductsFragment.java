@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ap_project.R;
 import com.example.ap_project.activities.HomeActivity;
 import com.example.ap_project.data.entities.Product;
+import com.example.ap_project.data.repository.Repository;
+import com.example.ap_project.data.repository.RepositoryCallback;
+import com.example.ap_project.data.repository.Result;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
@@ -34,18 +38,44 @@ public class ShowProductsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_show_products, container, false);
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        List<Product> products =new ArrayList<Product>();
-        for (int i = 0; i < 20; i++) {
 
-            products.add(new Product("salam",100,"","saman","0990"));
+        Repository repository = Repository.getInstance(view.getContext());
 
-        }
-        products.add(new Product("salam",100,"", HomeActivity.getUser().username,"0990"));
+        RepositoryCallback getProductCallback = new RepositoryCallback() {
+            @Override
+            public void onComplete(Result result) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (result instanceof Result.Success) {
 
-        ProductAdapter productAdapter = new ProductAdapter(products);
-        recyclerView.setAdapter(productAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                            List<Product> products= (List<Product>) ((Result.Success<?>) result).data;
+                            ProductAdapter productAdapter = new ProductAdapter(products);
+                            recyclerView.setAdapter(productAdapter);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+                        } else if (result instanceof Result.Error) {
+
+                            Toast.makeText(getContext(), "an error occurred", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+
+            }
+        };
+
+//        for (int i = 0; i < 20; i++) {
+//
+//            products.add(new Product("salam",100,"","saman","0990"));
+//
+//        }
+//        products.add(new Product("salam",100,"", HomeActivity.getUser().username,"0990"));
+
+//        ProductAdapter productAdapter = new ProductAdapter(products);
+//        recyclerView.setAdapter(productAdapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        repository.getProducts(getProductCallback);
         addProductBtn = view.findViewById(R.id.add_product_btn);
         addProductBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,7 +5,10 @@ import android.content.Context;
 import androidx.room.Room;
 
 import com.example.ap_project.data.AppDatabase;
+import com.example.ap_project.data.entities.Product;
 import com.example.ap_project.data.entities.User;
+
+import java.util.List;
 
 public class LocalDataSource {
 
@@ -31,5 +34,8 @@ public class LocalDataSource {
 
     public void insertProduct(String title,int price,String username,String phoneNumber,String imagePath){
         db.ProductDao().insert(title, price, username, phoneNumber, imagePath);
+    }
+    public List<Product> getProducts(){
+        return db.ProductDao().getProducts();
     }
 }

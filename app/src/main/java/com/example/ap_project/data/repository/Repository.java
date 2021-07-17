@@ -3,7 +3,10 @@ package com.example.ap_project.data.repository;
 import android.content.Context;
 
 import com.example.ap_project.application.MyApplication;
+import com.example.ap_project.data.entities.Product;
 import com.example.ap_project.data.entities.User;
+
+import java.util.List;
 
 public class Repository {
 
@@ -85,6 +88,19 @@ public class Repository {
                 try {
                     localDataSource.insertProduct(title, price, username, phoneNumber, imagePath);
                     callback.onComplete(new Result.Success<>(null));
+                } catch (Exception e) {
+                    callback.onComplete(new Result.Error<>(e));
+                }
+            }
+        });
+    }
+    public void getProducts(RepositoryCallback<List<Product>> callback){
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<Product> products = localDataSource.getProducts();
+                    callback.onComplete(new Result.Success<>(products));
                 } catch (Exception e) {
                     callback.onComplete(new Result.Error<>(e));
                 }
