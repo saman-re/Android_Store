@@ -107,4 +107,17 @@ public class Repository {
             }
         });
     }
+    public void deleteProduct(Product product,RepositoryCallback<Void> callback){
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    localDataSource.deleteProduct(product);
+                    callback.onComplete(new Result.Success<>(null));
+                } catch (Exception e) {
+                    callback.onComplete(new Result.Error<>(e));
+                }
+            }
+        });
+    }
 }

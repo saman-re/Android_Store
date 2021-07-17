@@ -20,5 +20,5 @@ public interface ProductDao {
     List<Product> getUserShoppingItems(String username);
 
     @Delete
-    void deleteUser(Product item);
+    void deleteProduct(Product item);
 }

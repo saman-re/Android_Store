@@ -2,29 +2,32 @@ package com.example.ap_project.content.products;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.ActivityCompat;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ap_project.R;
 import com.example.ap_project.activities.HomeActivity;
 import com.example.ap_project.data.entities.Product;
 import com.example.ap_project.data.entities.User;
+import com.example.ap_project.data.repository.Repository;
+import com.example.ap_project.data.repository.RepositoryCallback;
+import com.example.ap_project.data.repository.Result;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -64,8 +67,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         TextView title, owner, price, phoneNumber;
         ImageView productImage;
-//        View view;
-        AppCompatImageButton productEditBtn,productDeleteBtn;
+
+        AppCompatImageButton productEditBtn, productDeleteBtn;
+
+        View view;
+        Repository repository;
+        RepositoryCallback deleteProductCallback;
 
         public ProductViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -74,10 +81,30 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             price = itemView.findViewById(R.id.card_view_price);
             phoneNumber = itemView.findViewById(R.id.card_view_phone_number);
             productImage = itemView.findViewById(R.id.card_view_product_image);
-            productEditBtn=itemView.findViewById(R.id.card_edit_button);
-            productDeleteBtn=itemView.findViewById(R.id.card_delete_button);
+            productEditBtn = itemView.findViewById(R.id.card_edit_button);
+            productDeleteBtn = itemView.findViewById(R.id.card_delete_button);
 
-            currentUser =HomeActivity.getUser();
+            currentUser = HomeActivity.getUser();
+
+            view =itemView;
+            repository = Repository.getInstance(itemView.getContext());
+
+            deleteProductCallback = new RepositoryCallback() {
+                @Override
+                public void onComplete(Result result) {
+
+                    if (result instanceof Result.Success) {
+
+//                        Toast.makeText(itemView.getContext(), "deleted successfully", Toast.LENGTH_SHORT).show();
+
+                    } else if (result instanceof Result.Error) {
+
+//                        Toast.makeText(itemView.getContext(), "an error occurred", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            };
+
 
             phoneNumber.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -97,6 +124,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     }
                 }
             });
+
         }
 
         public void bind(Product product) {
@@ -110,13 +138,47 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     .error(R.drawable.card_image)
                     .fit().into(productImage);
 
-            if (currentUser.username.equals(product.username)){
+            if (currentUser.username.equals(product.username)) {
                 productEditBtn.setVisibility(View.VISIBLE);
                 productDeleteBtn.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 productEditBtn.setVisibility(View.GONE);
                 productDeleteBtn.setVisibility(View.GONE);
             }
+
+            productDeleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+
+                    //title
+                    alertDialogBuilder.setTitle("Are u sure??");
+                    //message
+                    alertDialogBuilder.setMessage("u want to delete this product?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    repository.deleteProduct(product,deleteProductCallback);
+                                    view.setVisibility(View.GONE);
+
+                                }
+                            }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+
+                }
+            });
+
+
         }
     }
 }

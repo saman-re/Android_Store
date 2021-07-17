@@ -270,21 +270,21 @@ public class HomeActivity extends AppCompatActivity {
             });
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK)
-            switch (requestCode) {
-                case GALLERY_REQUEST:
-                    selectedImage = data.getData();
-
-                    Picasso.get().load(selectedImage).fit().into(imageView);
-                    Log.d("TAGmn'", selectedImage.toString());
-                    repository.updateUser(user.username, user.password, user.phoneNumber, selectedImage.toString(), updateUserCallback);
-
-                    break;
-            }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == Activity.RESULT_OK)
+//            switch (requestCode) {
+//                case GALLERY_REQUEST:
+//                    selectedImage = data.getData();
+//
+//                    Picasso.get().load(selectedImage).fit().into(imageView);
+//                    Log.d("TAGmn'", selectedImage.toString());
+//                    repository.updateUser(user.username, user.password, user.phoneNumber, selectedImage.toString(), updateUserCallback);
+//
+//                    break;
+//            }
+//    }
 
     public static User getUser() {
         return user;

@@ -65,16 +65,6 @@ public class ShowProductsFragment extends Fragment {
             }
         };
 
-//        for (int i = 0; i < 20; i++) {
-//
-//            products.add(new Product("salam",100,"","saman","0990"));
-//
-//        }
-//        products.add(new Product("salam",100,"", HomeActivity.getUser().username,"0990"));
-
-//        ProductAdapter productAdapter = new ProductAdapter(products);
-//        recyclerView.setAdapter(productAdapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         repository.getProducts(getProductCallback);
         addProductBtn = view.findViewById(R.id.add_product_btn);
         addProductBtn.setOnClickListener(new View.OnClickListener() {

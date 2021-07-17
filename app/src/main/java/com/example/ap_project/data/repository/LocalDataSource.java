@@ -38,4 +38,7 @@ public class LocalDataSource {
     public List<Product> getProducts(){
         return db.ProductDao().getProducts();
     }
+    public void deleteProduct(Product product){
+        db.ProductDao().deleteProduct(product);
+    }
 }
