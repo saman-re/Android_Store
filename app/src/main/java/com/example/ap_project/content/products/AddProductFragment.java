@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class AddProductFragment extends Fragment {
 
-
+    User user;
 
     @Nullable
     @org.jetbrains.annotations.Nullable
@@ -28,9 +28,8 @@ public class AddProductFragment extends Fragment {
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_add_product, container, false);
-        User currentUser= HomeActivity.getUser();
-        TextView textView=view.findViewById(R.id.test_text_view);
-        textView.setText(currentUser.username);
+        user= HomeActivity.getUser();
+
 
         return view;
 
