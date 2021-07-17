@@ -13,6 +13,6 @@ import com.example.ap_project.data.entities.User;
 @Database(entities = {User.class, Product.class, ShoppingBasket.class},version = 1)
 abstract public class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
-    public abstract ProductDao shoppingItemDao();
+    public abstract ProductDao ProductDao();
     public abstract ShoppingBasketDao shoppingBasketDao();
 }

@@ -36,6 +36,7 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/edit_text_background"
         android:hint="Product price"
+        android:inputType="number"
         android:paddingVertical="10dp"
         android:paddingStart="20dp"
         android:textColor="@color/text_color_first"

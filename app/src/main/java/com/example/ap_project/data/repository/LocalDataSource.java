@@ -28,4 +28,8 @@ public class LocalDataSource {
     public void updateUser(String username ,String password,String phoneNumber,String imagePath){
         db.userDao().updateUser(username,password,phoneNumber,imagePath);
     }
+
+    public void insertProduct(String title,int price,String username,String phoneNumber,String imagePath){
+        db.ProductDao().insert(title, price, username, phoneNumber, imagePath);
+    }
 }

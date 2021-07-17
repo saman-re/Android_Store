@@ -163,7 +163,6 @@ public class HomeActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "hello", Toast.LENGTH_SHORT).show();
 
                 //start from here
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -282,12 +281,7 @@ public class HomeActivity extends AppCompatActivity {
                     Picasso.get().load(selectedImage).fit().into(imageView);
                     Log.d("TAGmn'", selectedImage.toString());
                     repository.updateUser(user.username, user.password, user.phoneNumber, selectedImage.toString(), updateUserCallback);
-//                    try {
-////                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
-////                        carImage.setImageBitmap(bitmap);
-//                    } catch (IOException e) {
-//                        Log.i("TAG", "Some exception " + e);
-//                    }
+
                     break;
             }
     }
