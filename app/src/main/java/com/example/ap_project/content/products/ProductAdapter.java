@@ -105,10 +105,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             phoneNumber.setText(product.phoneNumber);
             phoneNumber.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 //            Picasso.get().load(Uri.parse(product.imagePath)).fit().into(productImage);
-
-            if (!currentUser.username.equals(product.username)){
-                productEditBtn.setVisibility(View.INVISIBLE);
-                productDeleteBtn.setVisibility(View.INVISIBLE);
+            Log.d("TAGman", currentUser.username+"::"+product.username);
+            Log.d("TAGmandy", String.valueOf(!currentUser.username.equals(product.username)));
+            if (currentUser.username.equals(product.username)){
+                productEditBtn.setVisibility(View.VISIBLE);
+                productDeleteBtn.setVisibility(View.VISIBLE);
+            }else{
+                productEditBtn.setVisibility(View.GONE);
+                productDeleteBtn.setVisibility(View.GONE);
             }
         }
     }

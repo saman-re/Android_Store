@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ap_project.R;
+import com.example.ap_project.activities.HomeActivity;
 import com.example.ap_project.data.entities.Product;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -39,6 +40,7 @@ public class ShowProductsFragment extends Fragment {
             products.add(new Product("salam",100,"","saman","0990"));
 
         }
+        products.add(new Product("salam",100,"", HomeActivity.getUser().username,"0990"));
 
         ProductAdapter productAdapter = new ProductAdapter(products);
         recyclerView.setAdapter(productAdapter);
