@@ -2,7 +2,9 @@ package com.example.ap_project.content.products;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ap_project.R;
 import com.example.ap_project.activities.HomeActivity;
 import com.example.ap_project.data.entities.Product;
+import com.example.ap_project.data.entities.User;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -56,6 +59,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
 
+        User currentUser;
+
         TextView title, owner, price, phoneNumber;
         ImageView productImage;
 //        View view;
@@ -70,6 +75,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             productImage = itemView.findViewById(R.id.card_view_product_image);
             productEditBtn=itemView.findViewById(R.id.card_edit_button);
             productDeleteBtn=itemView.findViewById(R.id.card_delete_button);
+
+            currentUser =HomeActivity.getUser();
+
             phoneNumber.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,6 +105,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             phoneNumber.setText(product.phoneNumber);
             phoneNumber.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 //            Picasso.get().load(Uri.parse(product.imagePath)).fit().into(productImage);
+
+            if (!currentUser.username.equals(product.username)){
+                productEditBtn.setVisibility(View.INVISIBLE);
+                productDeleteBtn.setVisibility(View.INVISIBLE);
+            }
         }
     }
 }
