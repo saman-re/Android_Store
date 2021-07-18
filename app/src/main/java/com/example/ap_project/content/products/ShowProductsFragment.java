@@ -45,6 +45,7 @@ public class ShowProductsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_show_products, container, false);
 
         searchView = getActivity().findViewById(R.id.toolbar_search_view);
+        searchView.setVisibility(View.VISIBLE);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         ascBtn = view.findViewById(R.id.ascending_sort_button);
         descBtn =view.findViewById(R.id.descending_sort_button);

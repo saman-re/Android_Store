@@ -34,4 +34,7 @@ public interface ProductDao {
 
     @Query("DELETE FROM Product WHERE owner_username=:username")
     void deleteUserProduct(String username);
+
+    @Query("SELECT COUNT(id) FROM Product WHERE owner_username=:username")
+    void countUserProduct(String username);
 }

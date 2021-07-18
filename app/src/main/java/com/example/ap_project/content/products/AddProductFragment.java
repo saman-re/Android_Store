@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -41,6 +43,8 @@ public class AddProductFragment extends Fragment {
     EditText productTitleEditText, productPriceEditText;
     AppCompatImageButton productImageBtn;
     AppCompatButton saveBtn;
+    SearchView searchView;
+    TextView title;
 
     Uri selectedImage;
 
@@ -56,6 +60,10 @@ public class AddProductFragment extends Fragment {
         productPriceEditText =view.findViewById(R.id.edit_text_product_price);
         productImageBtn =view.findViewById(R.id.add_product_photo);
         saveBtn =view.findViewById(R.id.button_save_product);
+        searchView =getActivity().findViewById(R.id.toolbar_search_view);
+        title =view.findViewById(R.id.text_view_title);
+
+        searchView.setVisibility(View.GONE);
 
         int productId;
         final Product[] product = new Product[1];
@@ -142,7 +150,9 @@ public class AddProductFragment extends Fragment {
 
         productId = sharedUser.getInt("product_id", -1);
 
+        title.setText("add product");
         if(productId != -1){
+            title.setText("Edit Product");
             repository.getProduct(productId,getProductCallBack);
             sharedUser.edit().clear().apply();
         }
