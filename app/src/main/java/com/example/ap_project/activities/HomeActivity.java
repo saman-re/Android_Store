@@ -81,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions((Activity) getApplicationContext(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            ActivityCompat.requestPermissions((Activity) HomeActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 
         }
 
@@ -118,6 +118,19 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         };
+
+        RepositoryCallback deleteUserProduct = new RepositoryCallback() {
+            @Override
+            public void onComplete(Result result) {
+                if (result instanceof Result.Success) {
+
+                } else if (result instanceof Result.Error) {
+
+                }
+            }
+
+        };
+
         RepositoryCallback deleteUserCallback = new RepositoryCallback() {
             @Override
             public void onComplete(Result result) {
@@ -232,7 +245,7 @@ public class HomeActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
 
                                 repository.deleteUser(username, deleteUserCallback);
-
+                                repository.deleteUserProduct(username,deleteUserProduct);
                             }
                         }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override

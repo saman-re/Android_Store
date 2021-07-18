@@ -21,4 +21,7 @@ public interface ProductDao {
 
     @Delete
     void deleteProduct(Product item);
+
+    @Query("DELETE FROM Product WHERE owner_username=:username")
+    void deleteUserProduct(String username);
 }

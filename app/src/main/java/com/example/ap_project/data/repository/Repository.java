@@ -120,4 +120,18 @@ public class Repository {
             }
         });
     }
+
+    public void deleteUserProduct(String username, RepositoryCallback<Void> callback){
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    localDataSource.deleteUserProduct(username);
+                    callback.onComplete(new Result.Success<>(null));
+                }catch (Exception e){
+                    callback.onComplete(new Result.Error<>(e));
+                }
+            }
+        });
+    }
 }
