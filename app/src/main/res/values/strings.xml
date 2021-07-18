@@ -4,6 +4,7 @@
 <!--    textEdit hints-->
     <string name="EnterUsername">Enter your Username</string>
     <string name="EnterPassword">Enter your Password</string>
+    <string name="EnterPhoneNumber">Enter your Phone Number</string>
 <!--     switch text-->
     <string name="switch_title">Want\'s to be Seller:</string>
 <!--    log in titles-->
