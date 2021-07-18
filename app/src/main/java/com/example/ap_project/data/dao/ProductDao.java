@@ -17,6 +17,12 @@ public interface ProductDao {
     @Query("SELECT * FROM Product")
     List<Product> getProducts();
 
+    @Query("SELECT * FROM product ORDER BY price ASC")
+    List<Product> getASCPrice();
+
+    @Query("SELECT * FROM product ORDER BY price DESC")
+    List<Product> getDESCPrice();
+
     @Query("SELECT * FROM Product WHERE id=:id")
     Product getProduct(int id);
 

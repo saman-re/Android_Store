@@ -107,6 +107,34 @@ public class Repository {
             }
         });
     }
+
+    public void getASCPrice(RepositoryCallback<List<Product>> callback){
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<Product> products = localDataSource.getASCPrice();
+                    callback.onComplete(new Result.Success<>(products));
+                } catch (Exception e) {
+                    callback.onComplete(new Result.Error<>(e));
+                }
+            }
+        });
+    }
+    public void getDESCPrice(RepositoryCallback<List<Product>> callback){
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<Product> products = localDataSource.getDESCPrice();
+                    callback.onComplete(new Result.Success<>(products));
+                } catch (Exception e) {
+                    callback.onComplete(new Result.Error<>(e));
+                }
+            }
+        });
+    }
+
     public void getProduct(int id,RepositoryCallback<Product> callback){
         MyApplication.executorService.execute(new Runnable() {
             @Override

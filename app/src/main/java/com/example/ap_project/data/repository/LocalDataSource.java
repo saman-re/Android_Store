@@ -38,6 +38,13 @@ public class LocalDataSource {
     public List<Product> getProducts(){
         return db.ProductDao().getProducts();
     }
+    public List<Product> getASCPrice(){
+        return db.ProductDao().getASCPrice();
+    }
+    public List<Product> getDESCPrice(){
+        return db.ProductDao().getDESCPrice();
+    }
+
     public Product getProduct(int id){
         return db.ProductDao().getProduct(id);
     }

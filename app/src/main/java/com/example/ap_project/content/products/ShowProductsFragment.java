@@ -1,10 +1,13 @@
 package com.example.ap_project.content.products;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -33,7 +36,7 @@ public class ShowProductsFragment extends Fragment {
 
     FloatingActionButton addProductBtn;
     SearchView searchView;
-
+    Button ascBtn,descBtn;
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
@@ -42,8 +45,9 @@ public class ShowProductsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_show_products, container, false);
 
         searchView = getActivity().findViewById(R.id.toolbar_search_view);
-
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        ascBtn = view.findViewById(R.id.ascending_sort_button);
+        descBtn =view.findViewById(R.id.descending_sort_button);
 
         Repository repository = Repository.getInstance(view.getContext());
 
@@ -103,6 +107,28 @@ public class ShowProductsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(view).navigate(R.id.action_showProductsFragment_to_addProductFragment);
+            }
+        });
+        int initialColor=Color.parseColor("#344955");
+        ascBtn.setBackgroundColor(initialColor);
+        descBtn.setBackgroundColor(initialColor);
+
+        ascBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               repository.getASCPrice(getProductCallback);
+               descBtn.setBackgroundColor(Color.GRAY);
+               ascBtn.setBackgroundColor(initialColor);
+            }
+        });
+
+        descBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                repository.getDESCPrice(getProductCallback);
+                ascBtn.setBackgroundColor(Color.GRAY);
+                descBtn.setBackgroundColor(initialColor);
             }
         });
 
