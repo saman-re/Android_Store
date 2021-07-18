@@ -36,27 +36,14 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private List<Product> products;
 
-    public ProductAdapter(List<Product> products, String filter) {
-        if (filter == null) {
-
-            this.products = products;
-
-        } else {
-            List<Product> filteredProduct = new ArrayList<>();
-            for (Product product : products) {
-                if (product.title.equals(filter)) {
-                    filteredProduct.add(product);
-                }
-            }
-            this.products = filteredProduct;
-        }
+    public ProductAdapter(List<Product> products) {
+        this.products = products;
     }
 
     @NonNull
