@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ap_project.R;
 import com.example.ap_project.activities.HomeActivity;
 import com.example.ap_project.data.entities.Product;
+import com.example.ap_project.data.entities.User;
 import com.example.ap_project.data.repository.Repository;
 import com.example.ap_project.data.repository.RepositoryCallback;
 import com.example.ap_project.data.repository.Result;
@@ -67,6 +68,12 @@ public class ShowProductsFragment extends Fragment {
 
         repository.getProducts(getProductCallback);
         addProductBtn = view.findViewById(R.id.add_product_btn);
+        User user =HomeActivity.getUser();
+
+        if(user.seller){
+            addProductBtn.setVisibility(View.VISIBLE);
+        }
+
         addProductBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
