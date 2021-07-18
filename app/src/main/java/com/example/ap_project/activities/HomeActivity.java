@@ -85,6 +85,21 @@ public class HomeActivity extends AppCompatActivity {
 
         }
 
+        RepositoryCallback countUserProductCallBack = new RepositoryCallback() {
+            @Override
+            public void onComplete(Result result) {
+                if (result instanceof Result.Success) {
+                    int num = ((Result.Success<Integer>) result).data;
+                    String txt=String.format("product count: %d",num);
+                    navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setTitle(txt);
+
+                } else if (result instanceof Result.Error) {
+
+                }
+            }
+        };
+
+
         RepositoryCallback getUserCallback = new RepositoryCallback() {
             @Override
             public void onComplete(Result result) {
@@ -102,7 +117,7 @@ public class HomeActivity extends AppCompatActivity {
                             userName.setText(user.username);
                             phoneNumber.setText(user.phoneNumber);
                             if (user.seller) {
-                                navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setTitle("product count");
+//                                navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setTitle("product count");
                                 navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setTitle("account type: seller");
                             } else {
                                 navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setVisible(false);
@@ -179,8 +194,8 @@ public class HomeActivity extends AppCompatActivity {
         repository = Repository.getInstance(HomeActivity.this);
         repository.getUser(username, getUserCallback);
 
-//        Picasso.get().load(Uri.parse("content://media/external/images/media/5073")).into(imageView);
-        //set click listener for image view must be handle for getting image
+        repository.countUserProduct(username,countUserProductCallBack);
+
         imageView.setClickable(true);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,7 +260,7 @@ public class HomeActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
 
                                 repository.deleteUser(username, deleteUserCallback);
-                                repository.deleteUserProduct(username,deleteUserProduct);
+                                repository.deleteUserProduct(username, deleteUserProduct);
                             }
                         }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override

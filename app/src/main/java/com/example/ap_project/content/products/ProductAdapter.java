@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
@@ -51,9 +52,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         if (filter.equals("")) {
             this.products = products;
         } else {
-            List<Product> filteredProduct =new ArrayList<>();
+            List<Product> filteredProduct = new ArrayList<>();
             for (Product product : products) {
-                if (product.title.startsWith(filter)){
+                if (product.title.startsWith(filter)) {
                     filteredProduct.add(product);
                 }
             }
@@ -192,8 +193,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     repository.deleteProduct(product, deleteProductCallback);
+                                    CardView cardView = view.findViewById(R.id.card_view);
                                     view.setVisibility(View.GONE);
-
                                 }
                             }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
                         @Override

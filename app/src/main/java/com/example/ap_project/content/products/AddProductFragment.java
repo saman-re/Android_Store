@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ import com.example.ap_project.data.entities.User;
 import com.example.ap_project.data.repository.Repository;
 import com.example.ap_project.data.repository.RepositoryCallback;
 import com.example.ap_project.data.repository.Result;
+import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -55,13 +57,13 @@ public class AddProductFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_add_product, container, false);
 
-        user= HomeActivity.getUser();
-        productTitleEditText =view.findViewById(R.id.edit_text_product_title);
-        productPriceEditText =view.findViewById(R.id.edit_text_product_price);
-        productImageBtn =view.findViewById(R.id.add_product_photo);
-        saveBtn =view.findViewById(R.id.button_save_product);
-        searchView =getActivity().findViewById(R.id.toolbar_search_view);
-        title =view.findViewById(R.id.text_view_title);
+        user = HomeActivity.getUser();
+        productTitleEditText = view.findViewById(R.id.edit_text_product_title);
+        productPriceEditText = view.findViewById(R.id.edit_text_product_price);
+        productImageBtn = view.findViewById(R.id.add_product_photo);
+        saveBtn = view.findViewById(R.id.button_save_product);
+        searchView = getActivity().findViewById(R.id.toolbar_search_view);
+        title = view.findViewById(R.id.text_view_title);
 
         searchView.setVisibility(View.GONE);
 
@@ -151,12 +153,11 @@ public class AddProductFragment extends Fragment {
         productId = sharedUser.getInt("product_id", -1);
 
         title.setText("add product");
-        if(productId != -1){
+        if (productId != -1) {
             title.setText("Edit Product");
-            repository.getProduct(productId,getProductCallBack);
+            repository.getProduct(productId, getProductCallBack);
             sharedUser.edit().clear().apply();
         }
-
 
 
         productImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -174,20 +175,39 @@ public class AddProductFragment extends Fragment {
                 productTitle[0] = productTitleEditText.getText().toString();
                 productPrice[0] = productPriceEditText.getText().toString();
                 Log.d("call", String.valueOf(productPrice[0]));
-                if (productTitle[0].equals("")){
-                    Toast.makeText(v.getContext(),"enter the title",Toast.LENGTH_SHORT).show();
-                }else if (productPrice[0].equals("")){
-                    Toast.makeText(v.getContext(),"enter the price",Toast.LENGTH_SHORT).show();
-                }else if (selectedImage == null){
-                    Toast.makeText(v.getContext(),"select a image for your product",Toast.LENGTH_SHORT).show();
-                }else{
-                    if(productId == -1) {
+
+                if (productTitle[0].equals("")) {
+
+                    Toast.makeText(v.getContext(), "enter the title", Toast.LENGTH_SHORT).show();
+
+                } else if (productPrice[0].equals("")) {
+
+                    Toast.makeText(v.getContext(), "enter the price", Toast.LENGTH_SHORT).show();
+
+                } else if (selectedImage == null) {
+
+                    Toast.makeText(v.getContext(), "select a image for your product", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    if (productId == -1) {
+
+                        NavigationView navigationView = getActivity().findViewById(R.id.main_nav_drawer);
+                        String username = HomeActivity.getUser().username;
+
                         repository.insertProduct(productTitle[0], Integer.parseInt(productPrice[0]), user.username, user.phoneNumber, selectedImage.toString(), addProductCallback);
-                    }else {
+                        MenuItem item = navigationView.getMenu().getItem(0).getSubMenu().getItem(0);
+                        String title = item.getTitle().toString();
+                        int num = Integer.parseInt(title.substring(title.length() -1));
+                        String txt = String.format("product count: %d", ++num);
+                        item.setTitle(txt);
+
+                    } else {
+
                         product[0].title = productTitle[0];
                         product[0].price = Integer.parseInt(productPrice[0]);
                         product[0].imagePath = selectedImage.toString();
-                        repository.updateProduct(product[0],updateProductCallBack);
+                        repository.updateProduct(product[0], updateProductCallBack);
+
                     }
                 }
             }
@@ -196,6 +216,7 @@ public class AddProductFragment extends Fragment {
         return view;
 
     }
+
     ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override

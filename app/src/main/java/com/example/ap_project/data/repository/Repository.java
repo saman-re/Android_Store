@@ -190,4 +190,18 @@ public class Repository {
             }
         });
     }
+
+    public void countUserProduct(String username,RepositoryCallback<Integer> callback){
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    int productNum = localDataSource.countUserProduct(username);
+                    callback.onComplete(new Result.Success<>(productNum));
+                }catch (Exception e){
+                    callback.onComplete(new Result.Error<>(e));
+                }
+            }
+        });
+    }
 }

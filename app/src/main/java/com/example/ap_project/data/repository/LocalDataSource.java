@@ -58,4 +58,5 @@ public class LocalDataSource {
     public void deleteUserProduct(String username){
         db.ProductDao().deleteUserProduct(username);
     }
+    public int countUserProduct(String username){ return db.ProductDao().countUserProduct(username);}
 }
