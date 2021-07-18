@@ -159,7 +159,6 @@ public class HomeActivity extends AppCompatActivity {
                             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                             startActivity(intent);
                             finish();
-
                         } else if (result instanceof Result.Error) {
 
                             Toast.makeText(getApplicationContext(), "cant delete user", Toast.LENGTH_SHORT).show();
@@ -205,10 +204,7 @@ public class HomeActivity extends AppCompatActivity {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 mStartForResult.launch(photoPickerIntent);
-//                startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
 
-//                Log.d("TAG234", user.toString()+"/"+selectedImage);
-//                repository.updateUser(user.username,user.password,user.phoneNumber,selectedImage.toString(),updateUserCallback);
             }
         });
 
@@ -278,8 +274,6 @@ public class HomeActivity extends AppCompatActivity {
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
-//        BottomNavigationView bottomNav =findViewById(R.id.bottom_navigation);
-//        NavigationUI.setupWithNavController(bottomNav , navController);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
@@ -295,7 +289,6 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
 
-//                    Toast.makeText(getActivity(),Activity.DEFAULT_KEYS_DISABLE,Toast.LENGTH_SHORT).show();
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         selectedImage = result.getData().getData();
 
@@ -305,23 +298,6 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }
             });
-
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == Activity.RESULT_OK)
-//            switch (requestCode) {
-//                case GALLERY_REQUEST:
-//                    selectedImage = data.getData();
-//
-//                    Picasso.get().load(selectedImage).fit().into(imageView);
-//                    Log.d("TAGmn'", selectedImage.toString());
-//                    repository.updateUser(user.username, user.password, user.phoneNumber, selectedImage.toString(), updateUserCallback);
-//
-//                    break;
-//            }
-//    }
 
     public static User getUser() {
         return user;

@@ -195,6 +195,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                     repository.deleteProduct(product, deleteProductCallback);
                                     CardView cardView = view.findViewById(R.id.card_view);
                                     view.setVisibility(View.GONE);
+                                    Intent intent =new Intent(view.getContext(),HomeActivity.class);
+                                    view.getContext().startActivity(intent);
                                 }
                             }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
                         @Override
