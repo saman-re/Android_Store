@@ -107,6 +107,34 @@ public class Repository {
             }
         });
     }
+    public void getProduct(int id,RepositoryCallback<Product> callback){
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Product product =localDataSource.getProduct(id);
+                    callback.onComplete(new Result.Success<>(product));
+                }catch (Exception e){
+                    callback.onComplete(new Result.Error<>(e));
+                }
+            }
+        });
+    }
+
+    public void updateProduct(Product product,RepositoryCallback<Void> callback){
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    localDataSource.updateProduct(product);
+                    callback.onComplete(new Result.Success<>(null));
+                } catch (Exception e) {
+                    callback.onComplete(new Result.Error<>(e));
+                }
+            }
+        });
+    }
+
     public void deleteProduct(Product product,RepositoryCallback<Void> callback){
         MyApplication.executorService.execute(new Runnable() {
             @Override

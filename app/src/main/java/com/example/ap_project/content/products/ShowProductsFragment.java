@@ -50,7 +50,7 @@ public class ShowProductsFragment extends Fragment {
                     public void run() {
                         if (result instanceof Result.Success) {
 
-                            List<Product> products= (List<Product>) ((Result.Success<?>) result).data;
+                            List<Product> products = (List<Product>) ((Result.Success<?>) result).data;
                             ProductAdapter productAdapter = new ProductAdapter(products);
                             recyclerView.setAdapter(productAdapter);
                             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -68,9 +68,13 @@ public class ShowProductsFragment extends Fragment {
 
         repository.getProducts(getProductCallback);
         addProductBtn = view.findViewById(R.id.add_product_btn);
-        User user =HomeActivity.getUser();
 
-        if(user.seller){
+        User user = null;
+        while (user == null) {
+            user = HomeActivity.getUser();
+        }
+
+        if (user.seller) {
             addProductBtn.setVisibility(View.VISIBLE);
         }
 

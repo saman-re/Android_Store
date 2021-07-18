@@ -1,7 +1,9 @@
 package com.example.ap_project.content.products;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +26,7 @@ import androidx.navigation.Navigation;
 
 import com.example.ap_project.R;
 import com.example.ap_project.activities.HomeActivity;
+import com.example.ap_project.data.entities.Product;
 import com.example.ap_project.data.entities.User;
 import com.example.ap_project.data.repository.Repository;
 import com.example.ap_project.data.repository.RepositoryCallback;
@@ -54,6 +57,9 @@ public class AddProductFragment extends Fragment {
         productImageBtn =view.findViewById(R.id.add_product_photo);
         saveBtn =view.findViewById(R.id.button_save_product);
 
+        int productId;
+        final Product[] product = new Product[1];
+
         final String[] productTitle = new String[1];
         final String[] productPrice = new String[1];
 
@@ -81,6 +87,68 @@ public class AddProductFragment extends Fragment {
             }
         };
 
+        RepositoryCallback updateProductCallBack = new RepositoryCallback() {
+            @Override
+            public void onComplete(Result result) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (result instanceof Result.Success) {
+
+                            Toast.makeText(getActivity(), "Product updated successfully", Toast.LENGTH_SHORT).show();
+                            Navigation.findNavController(view).navigate(R.id.action_addProductFragment_to_showProductsFragment);
+
+                        } else if (result instanceof Result.Error) {
+
+                            Toast.makeText(getContext(), "an error occurred", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+            }
+        };
+
+        RepositoryCallback getProductCallBack = new RepositoryCallback() {
+            @Override
+            public void onComplete(Result result) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (result instanceof Result.Success) {
+
+                            product[0] = (Product) ((Result.Success<?>) result).data;
+
+                            productTitleEditText.setText(product[0].title);
+                            productPriceEditText.setText(String.valueOf(product[0].price));
+                            selectedImage = Uri.parse(product[0].imagePath);
+                            Picasso.get().load(selectedImage)
+                                    .error(R.drawable.add_photo_icon)
+                                    .placeholder(R.drawable.add_photo_icon)
+                                    .fit().into(productImageBtn);
+//                            saveBtn =view.findViewById(R.id.button_save_product);
+
+
+                        } else if (result instanceof Result.Error) {
+
+                            Toast.makeText(getContext(), "an error occurred", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+            }
+        };
+
+        SharedPreferences sharedUser = getActivity().getSharedPreferences("productEdit", Context.MODE_PRIVATE);
+
+        productId = sharedUser.getInt("product_id", -1);
+
+        if(productId != -1){
+            repository.getProduct(productId,getProductCallBack);
+            sharedUser.edit().clear().apply();
+        }
+
+
+
         productImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,7 +171,14 @@ public class AddProductFragment extends Fragment {
                 }else if (selectedImage == null){
                     Toast.makeText(v.getContext(),"select a image for your product",Toast.LENGTH_SHORT).show();
                 }else{
-                    repository.insertProduct(productTitle[0],Integer.parseInt(productPrice[0]), user.username, user.phoneNumber,selectedImage.toString(),addProductCallback);
+                    if(productId == -1) {
+                        repository.insertProduct(productTitle[0], Integer.parseInt(productPrice[0]), user.username, user.phoneNumber, selectedImage.toString(), addProductCallback);
+                    }else {
+                        product[0].title = productTitle[0];
+                        product[0].price = Integer.parseInt(productPrice[0]);
+                        product[0].imagePath = selectedImage.toString();
+                        repository.updateProduct(product[0],updateProductCallBack);
+                    }
                 }
             }
         });

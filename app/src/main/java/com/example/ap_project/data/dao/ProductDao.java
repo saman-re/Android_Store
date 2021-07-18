@@ -3,6 +3,7 @@ package com.example.ap_project.data.dao;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.ap_project.data.entities.Product;
 
@@ -16,8 +17,11 @@ public interface ProductDao {
     @Query("SELECT * FROM Product")
     List<Product> getProducts();
 
-    @Query("SELECT * FROM Product WHERE owner_username=:username")
-    List<Product> getUserShoppingItems(String username);
+    @Query("SELECT * FROM Product WHERE id=:id")
+    Product getProduct(int id);
+
+    @Update
+    void updateProduct(Product product);
 
     @Delete
     void deleteProduct(Product item);

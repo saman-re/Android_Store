@@ -38,6 +38,13 @@ public class LocalDataSource {
     public List<Product> getProducts(){
         return db.ProductDao().getProducts();
     }
+    public Product getProduct(int id){
+        return db.ProductDao().getProduct(id);
+    }
+    public void updateProduct(Product product){
+        db.ProductDao().updateProduct(product);
+    }
+
     public void deleteProduct(Product product){
         db.ProductDao().deleteProduct(product);
     }

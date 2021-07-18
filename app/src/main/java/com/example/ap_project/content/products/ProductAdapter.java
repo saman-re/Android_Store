@@ -2,11 +2,14 @@ package com.example.ap_project.content.products;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,14 +36,27 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private List<Product> products;
 
-    public ProductAdapter(List<Product> products) {
-        this.products = products;
+    public ProductAdapter(List<Product> products, String filter) {
+        if (filter == null) {
+
+            this.products = products;
+
+        } else {
+            List<Product> filteredProduct = new ArrayList<>();
+            for (Product product : products) {
+                if (product.title.equals(filter)) {
+                    filteredProduct.add(product);
+                }
+            }
+            this.products = filteredProduct;
+        }
     }
 
     @NonNull
@@ -86,7 +103,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
             currentUser = HomeActivity.getUser();
 
-            view =itemView;
+            view = itemView;
             repository = Repository.getInstance(itemView.getContext());
 
             deleteProductCallback = new RepositoryCallback() {
@@ -146,6 +163,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 productDeleteBtn.setVisibility(View.GONE);
             }
 
+            productEditBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences shareUser = v.getContext().getSharedPreferences("productEdit", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = shareUser.edit();
+                    editor.putInt("product_id", product.id);
+                    editor.apply();
+                    Navigation.findNavController(view).navigate(R.id.action_showProductsFragment_to_addProductFragment);
+                }
+            });
+
             productDeleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -161,7 +189,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    repository.deleteProduct(product,deleteProductCallback);
+                                    repository.deleteProduct(product, deleteProductCallback);
                                     view.setVisibility(View.GONE);
 
                                 }
