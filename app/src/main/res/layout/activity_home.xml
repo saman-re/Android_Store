@@ -21,16 +21,14 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-<!--        <RelativeLayout-->
-<!--            android:layout_width="200"-->
-<!--            android:layout_height="match_parent">-->
-            <androidx.appcompat.widget.SearchView
+
+            <SearchView
+                android:id="@+id/toolbar_search_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical"
                 />
-<!--        </RelativeLayout>-->
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.fragment.app.FragmentContainerView

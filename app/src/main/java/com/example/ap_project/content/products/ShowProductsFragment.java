@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,6 +32,7 @@ import java.util.List;
 public class ShowProductsFragment extends Fragment {
 
     FloatingActionButton addProductBtn;
+    SearchView searchView;
 
     @Nullable
     @org.jetbrains.annotations.Nullable
@@ -37,6 +40,8 @@ public class ShowProductsFragment extends Fragment {
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_show_products, container, false);
+
+        searchView = getActivity().findViewById(R.id.toolbar_search_view);
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
 
@@ -51,8 +56,24 @@ public class ShowProductsFragment extends Fragment {
                         if (result instanceof Result.Success) {
 
                             List<Product> products = (List<Product>) ((Result.Success<?>) result).data;
-                            ProductAdapter productAdapter = new ProductAdapter(products);
-                            recyclerView.setAdapter(productAdapter);
+                            final ProductAdapter[] productAdapter = {new ProductAdapter(products)};
+
+                            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                                @Override
+                                public boolean onQueryTextSubmit(String query) {
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onQueryTextChange(String newText) {
+
+                                    productAdapter[0] = new ProductAdapter(products,newText);
+                                    recyclerView.setAdapter(productAdapter[0]);
+                                    return false;
+                                }
+                            });
+
+                            recyclerView.setAdapter(productAdapter[0]);
                             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
                         } else if (result instanceof Result.Error) {
