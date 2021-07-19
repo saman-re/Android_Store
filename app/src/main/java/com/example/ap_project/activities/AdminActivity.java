@@ -7,6 +7,12 @@ import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.ap_project.R;
 import com.example.ap_project.data.entities.User;
@@ -17,6 +23,7 @@ import com.google.android.material.navigation.NavigationView;
 
 public class AdminActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
     NavigationView navigationView;
     MenuItem numProduct, sumPrices, numUsers, bestSeller;
 
@@ -25,6 +32,7 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
+        toolbar =findViewById(R.id.my_admin_toolbar);
         navigationView = findViewById(R.id.admin_nav_drawer);
         numProduct = navigationView.getMenu().getItem(0).getSubMenu().getItem(0);
         sumPrices = navigationView.getMenu().getItem(0).getSubMenu().getItem(1);
@@ -116,5 +124,18 @@ public class AdminActivity extends AppCompatActivity {
         repository.sumPrices(sumOfPricesCallBack);
         repository.countUsers(numberOfUserCallBack);
         repository.getBestSeller(bestSellerCallBack);
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
+
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
+                .setOpenableLayout(drawerLayout)
+                .build();
+
+        NavigationUI.setupWithNavController(navigationView, navController);
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
+
     }
 }

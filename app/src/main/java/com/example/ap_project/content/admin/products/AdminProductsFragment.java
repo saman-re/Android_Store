@@ -33,6 +33,8 @@ public class AdminProductsFragment extends Fragment {
 
     SearchView searchView;
     Button ascBtn,descBtn;
+    FloatingActionButton goToUser;
+
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
@@ -45,6 +47,8 @@ public class AdminProductsFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         ascBtn = view.findViewById(R.id.ascending_sort_button);
         descBtn =view.findViewById(R.id.descending_sort_button);
+
+        goToUser =view.findViewById(R.id.go_to_users_btn);
 
         Repository repository = Repository.getInstance(view.getContext());
 
@@ -90,6 +94,12 @@ public class AdminProductsFragment extends Fragment {
 
         repository.getProducts(getProductCallback);
 
+        goToUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_adminProductsFragment4_to_adminUserFragment5);
+            }
+        });
 
         int initialColor=Color.parseColor("#344955");
         ascBtn.setBackgroundColor(initialColor);

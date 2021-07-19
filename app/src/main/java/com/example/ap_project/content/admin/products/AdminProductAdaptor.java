@@ -108,11 +108,11 @@ public class AdminProductAdaptor extends RecyclerView.Adapter<AdminProductAdapto
 
                     if (result instanceof Result.Success) {
 
-                        Toast.makeText(itemView.getContext(), "deleted successfully", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(itemView.getContext(), "deleted successfully", Toast.LENGTH_SHORT).show();
 
                     } else if (result instanceof Result.Error) {
 
-                        Toast.makeText(itemView.getContext(), "an error occurred", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(itemView.getContext(), "an error occurred", Toast.LENGTH_SHORT).show();
 
                     }
                 }

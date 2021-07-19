@@ -3,10 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_admin"
-    app:startDestination="@id/adminUserFragment4">
+    app:startDestination="@id/adminProductsFragment4">
     <fragment
-        android:id="@+id/adminUserFragment4"
+        android:id="@+id/adminProductsFragment4"
+        android:name="com.example.ap_project.content.admin.products.AdminProductsFragment"
+        android:label="admin_product_fragment"
+        tools:layout="@layout/admin_product_fragment" >
+        <action
+            android:id="@+id/action_adminProductsFragment4_to_adminUserFragment5"
+            app:destination="@id/adminUserFragment5" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminUserFragment5"
         android:name="com.example.ap_project.content.admin.users.AdminUserFragment"
         android:label="admin_user_fragment"
-        tools:layout="@layout/admin_user_fragment" />
+        tools:layout="@layout/admin_user_fragment" >
+        <action
+            android:id="@+id/action_adminUserFragment5_to_adminProductsFragment4"
+            app:destination="@id/adminProductsFragment4" />
+    </fragment>
 </navigation>
