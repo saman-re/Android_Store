@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_admin"
+    app:startDestination="@id/adminProductsFragment2">
+    <fragment
+        android:id="@+id/adminProductsFragment2"
+        android:name="com.example.ap_project.content.admin.products.AdminProductsFragment"
+        android:label="admin_product_fragment"
+        tools:layout="@layout/admin_product_fragment" />
+</navigation>
