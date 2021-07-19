@@ -83,6 +83,10 @@ public class LocalDataSource {
         return db.userDao().countUsers();
     }
 
+    public List<User> getUsers(){
+        return db.userDao().getAllUsers();
+    }
+
     public User getBestSeller() {
         List<User> users = db.userDao().getAllUsers();
         int max = 0;

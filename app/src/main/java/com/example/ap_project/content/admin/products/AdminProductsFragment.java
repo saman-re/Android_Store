@@ -31,7 +31,6 @@ import java.util.List;
 
 public class AdminProductsFragment extends Fragment {
 
-    FloatingActionButton addProductBtn;
     SearchView searchView;
     Button ascBtn,descBtn;
     @Nullable
@@ -90,7 +89,6 @@ public class AdminProductsFragment extends Fragment {
         };
 
         repository.getProducts(getProductCallback);
-        addProductBtn = view.findViewById(R.id.add_product_btn);
 
 
         int initialColor=Color.parseColor("#344955");

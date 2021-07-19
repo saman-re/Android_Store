@@ -252,6 +252,20 @@ public class Repository {
         });
     }
 
+    public void getUsers(RepositoryCallback callback){
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<User> users = localDataSource.getUsers();
+                    callback.onComplete(new Result.Success<List<User>>(users));
+                } catch (Exception e) {
+                    callback.onComplete(new Result.Error(e));
+                }
+            }
+        });
+    }
+
     public void getBestSeller(RepositoryCallback callback) {
         MyApplication.executorService.execute(new Runnable() {
             @Override
