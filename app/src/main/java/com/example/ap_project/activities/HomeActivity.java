@@ -292,7 +292,10 @@ public class HomeActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         selectedImage = result.getData().getData();
 
-                        Picasso.get().load(selectedImage).into(imageView);
+                        Picasso.get().load(selectedImage)
+                                .error(R.drawable.add_photo_icon)
+                                .placeholder(R.drawable.add_photo_icon)
+                                .fit().into(imageView);
                         Log.d("TAGmn'", selectedImage.toString());
                         repository.updateUser(user.username, user.password, user.phoneNumber, selectedImage.toString(), updateUserCallback);
                     }
