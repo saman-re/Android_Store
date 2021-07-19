@@ -81,7 +81,7 @@ public class Repository {
         });
     }
 
-    public void insertProduct(String title,int price,String username,String phoneNumber,String imagePath,RepositoryCallback<Void> callback){
+    public void insertProduct(String title, int price, String username, String phoneNumber, String imagePath, RepositoryCallback<Void> callback) {
         MyApplication.executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -94,7 +94,8 @@ public class Repository {
             }
         });
     }
-    public void getProducts(RepositoryCallback<List<Product>> callback){
+
+    public void getProducts(RepositoryCallback<List<Product>> callback) {
         MyApplication.executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -108,7 +109,7 @@ public class Repository {
         });
     }
 
-    public void getASCPrice(RepositoryCallback<List<Product>> callback){
+    public void getASCPrice(RepositoryCallback<List<Product>> callback) {
         MyApplication.executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -121,7 +122,8 @@ public class Repository {
             }
         });
     }
-    public void getDESCPrice(RepositoryCallback<List<Product>> callback){
+
+    public void getDESCPrice(RepositoryCallback<List<Product>> callback) {
         MyApplication.executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -135,21 +137,21 @@ public class Repository {
         });
     }
 
-    public void getProduct(int id,RepositoryCallback<Product> callback){
+    public void getProduct(int id, RepositoryCallback<Product> callback) {
         MyApplication.executorService.execute(new Runnable() {
             @Override
             public void run() {
-                try{
-                    Product product =localDataSource.getProduct(id);
+                try {
+                    Product product = localDataSource.getProduct(id);
                     callback.onComplete(new Result.Success<>(product));
-                }catch (Exception e){
+                } catch (Exception e) {
                     callback.onComplete(new Result.Error<>(e));
                 }
             }
         });
     }
 
-    public void updateProduct(Product product,RepositoryCallback<Void> callback){
+    public void updateProduct(Product product, RepositoryCallback<Void> callback) {
         MyApplication.executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -163,7 +165,7 @@ public class Repository {
         });
     }
 
-    public void deleteProduct(Product product,RepositoryCallback<Void> callback){
+    public void deleteProduct(Product product, RepositoryCallback<Void> callback) {
         MyApplication.executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -177,29 +179,88 @@ public class Repository {
         });
     }
 
-    public void deleteUserProduct(String username, RepositoryCallback<Void> callback){
+    public void deleteUserProduct(String username, RepositoryCallback<Void> callback) {
         MyApplication.executorService.execute(new Runnable() {
             @Override
             public void run() {
                 try {
                     localDataSource.deleteUserProduct(username);
                     callback.onComplete(new Result.Success<>(null));
-                }catch (Exception e){
+                } catch (Exception e) {
                     callback.onComplete(new Result.Error<>(e));
                 }
             }
         });
     }
 
-    public void countUserProduct(String username,RepositoryCallback<Integer> callback){
+    public void countUserProduct(String username, RepositoryCallback<Integer> callback) {
         MyApplication.executorService.execute(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     int productNum = localDataSource.countUserProduct(username);
                     callback.onComplete(new Result.Success<>(productNum));
-                }catch (Exception e){
+                } catch (Exception e) {
                     callback.onComplete(new Result.Error<>(e));
+                }
+            }
+        });
+    }
+
+    public void countAllProduct(RepositoryCallback callback) {
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int count = localDataSource.countAllProduct();
+                    callback.onComplete(new Result.Success<Integer>(count));
+                } catch (Exception e) {
+                    callback.onComplete(new Result.Error<>(e));
+                }
+            }
+        });
+    }
+
+    public void sumPrices(RepositoryCallback callback) {
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int sum = localDataSource.sumPrices();
+                    callback.onComplete(new Result.Success<Integer>(sum));
+                } catch (Exception e) {
+                    callback.onComplete(new Result.Error(e));
+                }
+            }
+        });
+    }
+
+    public void countUsers(RepositoryCallback callback) {
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int count = localDataSource.countUsers();
+                    callback.onComplete(new Result.Success<Integer>(count));
+
+                } catch (Exception e) {
+
+                    callback.onComplete(new Result.Error(e));
+
+                }
+            }
+        });
+    }
+
+    public void getBestSeller(RepositoryCallback callback) {
+        MyApplication.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                  User bestSeller = localDataSource.getBestSeller();
+                  callback.onComplete(new Result.Success<User>(bestSeller));
+                } catch (Exception e) {
+                    callback.onComplete(new Result.Error(e));
                 }
             }
         });

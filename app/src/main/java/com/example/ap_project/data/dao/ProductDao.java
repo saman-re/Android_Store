@@ -37,4 +37,10 @@ public interface ProductDao {
 
     @Query("SELECT COUNT(id) FROM Product WHERE owner_username=:username")
     int countUserProduct(String username);
+
+    @Query("SELECT COUNT(id) FROM product")
+    int countAllProduct();
+
+    @Query("SELECT SUM(price) FROM product")
+    int sumPrices();
 }

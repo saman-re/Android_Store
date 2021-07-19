@@ -5,6 +5,8 @@ import androidx.room.Query;
 
 import com.example.ap_project.data.entities.User;
 
+import java.util.List;
+
 @Dao
 public interface UserDao {
 
@@ -19,4 +21,10 @@ public interface UserDao {
 
     @Query("DELETE FROM User WHERE username=:username")
     void deleteUser(String username);
+
+    @Query("SELECT COUNT(username) FROM User")
+    int countUsers();
+
+    @Query("SELECT * FROM User")
+    List<User> getAllUsers();
 }
