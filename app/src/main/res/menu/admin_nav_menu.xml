@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item android:title="product info">
+            <menu>
+                <item
+                    android:enabled="false"
+                    android:icon="@drawable/error_icon"
+                    android:title="number of products" />
+                <item
+                    android:enabled="false"
+                    android:icon="@drawable/error_icon"
+                    android:title="sum of prizes" />
+            </menu>
+        </item>
+    </group>
+    <group>
+        <item android:title="users info">
+            <menu>
+                <item
+                    android:enabled="false"
+                    android:icon="@drawable/error_icon"
+                    android:title="number of users" />
+                <item
+                    android:enabled="false"
+                    android:icon="@drawable/error_icon"
+                    android:title="best seller" />
+            </menu>
+        </item>
+    </group>
+</menu>

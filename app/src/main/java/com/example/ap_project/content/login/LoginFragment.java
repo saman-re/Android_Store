@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.ap_project.R;
+import com.example.ap_project.activities.AdminActivity;
 import com.example.ap_project.activities.HomeActivity;
 import com.example.ap_project.activities.LoginActivity;
 import com.example.ap_project.data.entities.User;
@@ -111,9 +112,17 @@ public class LoginFragment extends Fragment {
                 };
 
                 if (userName.equals("") || password.equals("")) {
+
                     Toast.makeText(getActivity(), "Please fill out all forms", Toast.LENGTH_SHORT).show();
 
-                } else {
+                }else if(userName.equals("admin") && password.equals("admin")){
+
+                    Toast.makeText(getActivity(), "welcome Admin", Toast.LENGTH_SHORT).show();
+                    Intent intent =new Intent(getActivity(), AdminActivity.class);
+                    getActivity().startActivity(intent);
+                    getActivity().finish();
+                }
+                else {
                     //handle connecting to data base
                     Repository.getInstance(getContext()).getUser(userName, callback);
 

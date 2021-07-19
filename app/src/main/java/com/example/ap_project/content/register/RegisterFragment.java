@@ -46,7 +46,7 @@ public class RegisterFragment extends Fragment {
         userNameEditText = view.findViewById(R.id.edit_text_username);
         passwordEditText = view.findViewById(R.id.edit_text_password);
         phoneNumberEditText = view.findViewById(R.id.edit_text_phone_number);
-        sellerOption =view.findViewById(R.id.seller_option_switch);
+        sellerOption = view.findViewById(R.id.seller_option_switch);
         loginTextView = view.findViewById(R.id.text_view_login);
         singUpButton = view.findViewById(R.id.sign_up_button);
         errorTextView = view.findViewById(R.id.error_text_view);
@@ -67,7 +67,7 @@ public class RegisterFragment extends Fragment {
                 userName = userNameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
                 phoneNumber = phoneNumberEditText.getText().toString();
-                seller =sellerOption.isChecked();
+                seller = sellerOption.isChecked();
 
                 RepositoryCallback callback = new RepositoryCallback() {
                     @SuppressLint("SetTextI18n")
@@ -78,32 +78,32 @@ public class RegisterFragment extends Fragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(getActivity(),"User registered successfully",Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(getActivity(),"Welcome "+userName,Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "User registered successfully", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Welcome " + userName, Toast.LENGTH_SHORT).show();
 
-                                    Context context=getActivity();
-                                    SharedPreferences shareUser =context.getSharedPreferences("profile_username",Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor=shareUser.edit();
-                                    editor.putString("username",userName);
+                                    Context context = getActivity();
+                                    SharedPreferences shareUser = context.getSharedPreferences("profile_username", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = shareUser.edit();
+                                    editor.putString("username", userName);
                                     editor.apply();
 
-                                    Intent intent=new Intent(getContext(), HomeActivity.class);
+                                    Intent intent = new Intent(getContext(), HomeActivity.class);
                                     startActivity(intent);
                                     getActivity().finish();
                                 }
                             });
 
-                        }else if (result instanceof Result.Error){
+                        } else if (result instanceof Result.Error) {
 
-                            String Err=((Result.Error<Exception>) result).exception.getMessage();
+                            String Err = ((Result.Error<Exception>) result).exception.getMessage();
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (Err.startsWith("UNIQUE constraint failed")){
+                                    if (Err.startsWith("UNIQUE constraint failed")) {
 
                                         errorTextView.setText("username Already exist");
 
-                                    }else {
+                                    } else {
 
                                         errorTextView.setText("Error in Fetching Data");
 
@@ -117,14 +117,15 @@ public class RegisterFragment extends Fragment {
                     }
                 };
 
-                if(userName.equals("") || password.equals("") || phoneNumber.equals("")){
-                    Toast.makeText(getActivity(),"Please fill out all forms", Toast.LENGTH_SHORT).show();
-                }else {
-                    //handle connecting to data base
-                    Repository.getInstance(getActivity()).insertUser(userName,password,phoneNumber,"",seller,callback);
+                if (userName.equals("") || password.equals("") || phoneNumber.equals("")) {
+                    Toast.makeText(getActivity(), "Please fill out all forms", Toast.LENGTH_SHORT).show();
+                } else if (userName.equals("admin")) {
+                    errorTextView.setText("User Name can't be admin");
+                    errorTextView.setVisibility(View.VISIBLE);
+                } else {
 
-//                    String a = String.format("%s,,%s,,%s %s", userName, password, phoneNumber,seller);
-//                    Toast.makeText(getActivity(), a, Toast.LENGTH_SHORT).show();
+                    Repository.getInstance(getActivity()).insertUser(userName, password, phoneNumber, "", seller, callback);
+
                 }
             }
         });

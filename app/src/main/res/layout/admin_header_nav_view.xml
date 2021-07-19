@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/primary">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/admin_icon"
+        app:civ_border_width="10dp"
+        android:layout_gravity="center"
+        app:civ_border_color="#716B6B"/>
+
+    <TextView
+        android:id="@+id/text_view_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="#CAC9C9"
+        android:textStyle="bold"
+        android:textSize="28sp"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:text="Admin" />
+
+</LinearLayout>
