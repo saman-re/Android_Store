@@ -225,7 +225,10 @@ public class AddProductFragment extends Fragment {
 //                    Toast.makeText(getActivity(),Activity.DEFAULT_KEYS_DISABLE,Toast.LENGTH_SHORT).show();
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         selectedImage = result.getData().getData();
-
+                        Picasso.get().load(selectedImage)
+                                .error(R.drawable.add_photo_icon)
+                                .placeholder(R.drawable.add_photo_icon)
+                                .fit().into(productImageBtn);
 //                        Picasso.get().load(selectedImage).into(imageView);
 //                        Log.d("TAGmn'", selectedImage.toString());
 //                        repository.updateUser(user.username, user.password, user.phoneNumber, selectedImage.toString(), updateUserCallback);
